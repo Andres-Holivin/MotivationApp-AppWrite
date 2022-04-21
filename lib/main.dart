@@ -1,6 +1,6 @@
-import 'package:appwrite/configs/app_router.dart';
-import 'package:appwrite/configs/app_router.gr.dart';
 import 'package:flutter/material.dart';
+
+import 'configs/app_router.gr.dart';
 
 void main() {
   runApp(const MyApp());

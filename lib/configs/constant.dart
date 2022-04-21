@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 AppBar CustomAppBar(title) {
   return AppBar(
-    shadowColor: Colors.black26,
+    shadowColor: Colors.black12,
     title: Text(
       title,
-      style: TextStyle(
-          color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
+      style: const TextStyle(
+          color: Colors.black, fontSize: 22, fontWeight: FontWeight.w600),
     ),
     actions: [
       Padding(
