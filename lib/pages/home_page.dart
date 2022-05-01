@@ -1,84 +1,92 @@
+import 'package:MotivationApps/configs/app_router.gr.dart';
+import 'package:MotivationApps/services/firebase_service.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-import '../configs/constant.dart';
+import '../services/notification_service.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  NotificationService _notificationService = NotificationService();
+  late FirebaseMessaging messaging;
+  String? notificationText;
+  @override
+  void initState() {
+    super.initState();
+    messaging = FirebaseMessaging.instance;
+    messaging.subscribeToTopic("messaging");
+    messaging.getToken().then((value) {
+      print(value);
+    });
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      print("message recieved");
+      print(event.notification!.body);
+      print(event.data.values);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Notification"),
+              content: Text(event.notification!.body!),
+              actions: [
+                TextButton(
+                  child: Text("Ok"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('Message clicked!');
+    });
+    // getNotification();
+  }
+
+  void getNotification() async {
+    _notificationService.init(_onDidReceiveLocalNotification);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar("Hi, Andres"),
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                children: [
-                  const Text(
-                    "Category",
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-                  ),
-                  SizedBox(height: 10),
-                  const Text(
-                    "Category",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-                  ),
-                ],
-              ),
-              Container(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        CategoryItem(
-                          image: "",
-                          onTap: () {},
-                          title: "',
-                        ),
-                        // SizedBox(width: 10),
-                        // CategoryItem(),
-                      ],
-                    ),
-                    SizedBox(height: 15),
-                    Row(
-                      children: [
-                        // CategoryItem(),
-                        // SizedBox(width: 10),
-                        // CategoryItem(),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              TextButton(onPressed: () {}, child: Text("Login With Google")),
-            ],
-          ),
-        ));
-  }
-}
-
-class CategoryItem extends StatelessWidget {
-  const CategoryItem({
-    Key? key,
-    required this.title,
-    required this.onTap,
-    required this.image,
-  }) : super(key: key);
-  final String title;
-  final GestureTapCallback onTap;
-  final String image;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10), color: Colors.red),
-          height: MediaQuery.of(context).size.height * 0.2,
-          child: Center(child: Text("data"))),
+      body: Container(
+        child: TextButton(
+          onPressed: () async {
+            _notificationService.showNotification("hello");
+            print(await FirebaseService().getToken());
+          },
+          child: Text("token"),
+        ),
+      ),
+      floatingActionButton: Container(
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 60),
+        child: FloatingActionButton(
+          onPressed: () {
+            context.router.push(const CategoryPageRoute());
+          },
+          child: Icon(Icons.add),
+        ),
+      ),
     );
+  }
+
+  Future<dynamic> _onDidReceiveLocalNotification(
+      int id, String? title, String? body, String? payload) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+            title: Text(title ?? ''),
+            content: Text(body ?? ''),
+            actions: [TextButton(child: Text("Ok"), onPressed: () async {})]));
   }
 }

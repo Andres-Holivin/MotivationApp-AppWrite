@@ -1,14 +1,37 @@
-import 'package:MotivationApps/configs/app_router.gr.dart';
-import 'package:MotivationApps/pages/home_page.dart';
-import 'package:MotivationApps/services/appwrite.dart';
+import 'package:appwrite/models.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
+import 'package:provider/provider.dart';
 
-import '../components/custom_pop_up.dart';
+import '../configs/app_router.gr.dart';
+import '../services/appwrite_service.dart';
 
-class SplashPage extends StatelessWidget {
+class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  @override
+  void initState() {
+    super.initState();
+    cekCurrentUser();
+  }
+
+  void cekCurrentUser() async {
+    User? user = await context.read<AppWriteService>().getCurrentUser();
+    print("start");
+    Future.delayed(Duration(seconds: 2), () {
+      print("a");
+      if (user != null) {
+        context.router.replace(const MasterPageRoute());
+      } else {
+        context.router.replace(const LoginPageRoute());
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +52,7 @@ class SplashPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Expanded(
-                  flex: 8,
+                  flex: 9,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -41,66 +64,16 @@ class SplashPage extends StatelessWidget {
                     ],
                   )),
               Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("Login With",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconAuth(
-                              icon: Ionicons.logo_google,
-                              onTap: () {
-                                OauthGoogle();
-                                context.router.replace(const HomePageRoute());
-                              }),
-                          SizedBox(width: 20),
-                          IconAuth(
-                              icon: Ionicons.logo_github,
-                              onTap: () {
-                                OauthGithub();
-                                context.router.replace(const HomePageRoute());
-                              }),
-                        ],
-                      )
+                    children: const [
+                      CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
                     ],
                   )),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class IconAuth extends StatelessWidget {
-  const IconAuth({
-    Key? key,
-    required this.icon,
-    required this.onTap,
-  }) : super(key: key);
-  final IconData icon;
-  final GestureTapCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Ink(
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(50)),
-      child: IconButton(
-        color: Colors.white,
-        splashColor: Colors.black12,
-        splashRadius: 20,
-        onPressed: onTap,
-        icon: Icon(
-          icon,
-          color: Colors.black,
         ),
       ),
     );

@@ -15,6 +15,14 @@ dependencies:
   ionicons: ^0.1.2
   appwrite: ^4.0.2
   flutter_icons_null_safety: ^1.1.0
+  flutter_dotenv: ^5.0.2
+  provider: ^6.0.2
+  riverpod: ^1.0.3
+  firebase_core: ^1.15.0
+  firebase_messaging: ^11.2.15
+  firebase_analytics: ^9.1.6
+  firebase_analytics_web: ^0.4.0+11
+  flutter_local_notifications: ^9.4.1
 
 dev_dependencies:
   flutter_test:
@@ -27,6 +35,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - .env
+    - .env.local
   #   - images/a_dot_ham.jpeg
   # fonts:
   #   - family: Schyler

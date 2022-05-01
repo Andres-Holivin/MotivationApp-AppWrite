@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 
 class CustomPopUp extends StatefulWidget {
-  const CustomPopUp({Key? key}) : super(key: key);
-
+  const CustomPopUp({Key? key, required this.title}) : super(key: key);
+  final String title;
   @override
   State<CustomPopUp> createState() => _CustomPopUpState();
 }
@@ -33,7 +33,7 @@ class _CustomPopUpState extends State<CustomPopUp>
               )),
           const SizedBox(height: 15),
           const Text(
-            "Loading...",
+            'Loading...',
             style: TextStyle(fontSize: 28),
           )
         ]),

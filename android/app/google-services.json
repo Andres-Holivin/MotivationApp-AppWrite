@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "306999069151",
+    "project_id": "motivationalapp-5d0ed",
+    "storage_bucket": "motivationalapp-5d0ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306999069151:android:af713669d18760b71edc6a",
+        "android_client_info": {
+          "package_name": "com.example.appwrite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "306999069151-ni70g1guovd7njkmvpuvps7rnu1e9u52.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHR51MWloZDwTW6ta-IGExSp9mZ-uwvSc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "306999069151-ni70g1guovd7njkmvpuvps7rnu1e9u52.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

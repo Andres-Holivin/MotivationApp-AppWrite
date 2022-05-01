@@ -1,12 +1,18 @@
+import 'package:MotivationApps/pages/login_page.dart';
+import 'package:MotivationApps/pages/registration_page.dart';
 import 'package:auto_route/auto_route.dart';
 
-import '../pages/home_page.dart';
+import '../pages/category_page.dart';
+import '../pages/master_page.dart';
 import '../pages/splash_page.dart';
 
-@AdaptiveAutoRouter(
+@MaterialAutoRouter(
   routes: <AutoRoute>[
     AutoRoute(page: SplashPage, initial: true),
-    AutoRoute(page: HomePage),
+    AutoRoute(page: CategoryPage),
+    AutoRoute(page: MasterPage),
+    AutoRoute(page: LoginPage),
+    AutoRoute(page: RegistrationPage),
   ],
 )
 class $AppRouter {}
