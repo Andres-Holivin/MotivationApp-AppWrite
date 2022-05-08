@@ -1,5 +1,7 @@
 import 'package:MotivationApps/services/appwrite_service.dart';
 import 'package:MotivationApps/services/client_provider.dart';
+import 'package:MotivationApps/services/firebase_service.dart';
+import 'package:MotivationApps/services/local_notification_service.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -20,9 +22,7 @@ Future main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
   runApp(const MyApp());
 }
 
@@ -40,10 +40,10 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    getClient();
+    getConfig();
   }
 
-  void getClient() async {
+  void getConfig() async {
     _client = await clientProvider();
   }
 
@@ -51,8 +51,14 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider<LocalNotificationService>(
+            create: (context) => LocalNotificationService(
+                  context,
+                )),
         ChangeNotifierProvider<AppWriteService>(
-            create: (context) => AppWriteService(_client))
+            create: (context) => AppWriteService(_client)),
+        ChangeNotifierProvider<FirebaseService>(
+            create: (context) => FirebaseService()),
       ],
       child: MaterialApp.router(
         title: 'Motivation Apps',

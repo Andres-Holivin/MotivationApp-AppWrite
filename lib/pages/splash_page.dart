@@ -22,9 +22,7 @@ class _SplashPageState extends State<SplashPage> {
 
   void cekCurrentUser() async {
     User? user = await context.read<AppWriteService>().getCurrentUser();
-    print("start");
-    Future.delayed(Duration(seconds: 2), () {
-      print("a");
+    Future.delayed(const Duration(seconds: 2), () {
       if (user != null) {
         context.router.replace(const MasterPageRoute());
       } else {

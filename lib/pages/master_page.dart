@@ -1,12 +1,12 @@
 import 'package:MotivationApps/components/custom_navigation_bar.dart';
 import 'package:MotivationApps/pages/home_page.dart';
-import 'package:MotivationApps/pages/list_page.dart';
-import 'package:MotivationApps/pages/notification_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../components/custom_app_bar.dart';
 import '../models/navigation_data_model.dart';
+import 'list_page.dart';
+import 'notification_page.dart';
 
 class MasterPage extends StatefulWidget {
   const MasterPage({Key? key}) : super(key: key);
@@ -74,7 +74,7 @@ class ItemPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return IndexedStack(
       index: index,
-      children: [HomePage(), ListPage(), NotificationPage()],
+      children: const [HomePage(), ListPage(), NotificationPage()],
     );
   }
 }

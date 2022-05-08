@@ -1,7 +1,10 @@
 import 'dart:typed_data';
 
+import 'package:MotivationApps/configs/app_router.gr.dart';
+import 'package:MotivationApps/models/category_model.dart';
 import 'package:MotivationApps/services/appwrite_service.dart';
 import 'package:appwrite/models.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,10 +42,9 @@ class CategoryPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                FutureBuilder<DocumentList?>(
+                FutureBuilder<List<CategoryModel?>>(
                   future: context.read<AppWriteService>().getCategory(),
-                  builder:
-                      (BuildContext c, AsyncSnapshot<DocumentList?> snapshot) {
+                  builder: (c, snapshot) {
                     if (snapshot.hasData) {
                       return GridView.count(
                         childAspectRatio:
@@ -51,18 +53,20 @@ class CategoryPage extends StatelessWidget {
                         shrinkWrap: true,
                         crossAxisCount: 2,
                         children: List.generate(
-                          snapshot.data?.documents.length ?? 0,
+                          snapshot.data?.length ?? 0,
                           (index) {
+                            var item = snapshot.data != null
+                                ? snapshot.data![index]
+                                : null;
                             return InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                context.router.replace(
+                                    AddSchedulerDetailPageRoute(
+                                        categoryModel: item!));
+                              },
                               child: CategoryItem(
-                                title: snapshot
-                                        .data?.documents[index].data['title'] ??
-                                    'error',
-                                onTap: () {},
-                                image: snapshot.data?.documents[index]
-                                        .data['file_id'] ??
-                                    '',
+                                title: item?.title ?? 'error',
+                                image: item?.file ?? Uint8List(0),
                               ),
                             );
                           },
@@ -85,56 +89,45 @@ class CategoryItem extends StatelessWidget {
   const CategoryItem({
     Key? key,
     required this.title,
-    required this.onTap,
     required this.image,
   }) : super(key: key);
   final String title;
-  final GestureTapCallback onTap;
-  final String image;
+  final Uint8List image;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(6.0),
-        child: FutureBuilder<Uint8List>(
-            future: context.read<AppWriteService>().getCategoryPicture(image),
-            builder: (BuildContext context, AsyncSnapshot<Uint8List> snapshot) {
-              if (snapshot.hasData && snapshot.data != null) {
-                return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white24,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.3), blurRadius: 10)
-                      ],
-                    ),
-                    child: Column(children: [
-                      Expanded(
-                        flex: 9,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.memory(
-                            snapshot.data ?? Uint8List(0),
-                            fit: BoxFit.fill,
-                            width: MediaQuery.of(context).size.width / 2,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          title,
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16),
-                        ),
-                      )
-                    ]));
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            }));
+        child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white24,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(color: Colors.grey.withOpacity(0.3), blurRadius: 10)
+              ],
+            ),
+            child: Column(children: [
+              Expanded(
+                flex: 9,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.memory(
+                    image,
+                    fit: BoxFit.fill,
+                    width: MediaQuery.of(context).size.width / 2,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16),
+                ),
+              )
+            ])));
   }
 }

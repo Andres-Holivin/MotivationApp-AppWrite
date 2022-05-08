@@ -37,6 +37,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 itemBuilder: (c) => [
                       PopupMenuItem(
                         onTap: () {
+                          // c.read<LocalNotificationService>().sendNotification();
                           c.read<AppWriteService>().logOut().then(
                               (_) => c.router.replace(const SplashPageRoute()));
                         },

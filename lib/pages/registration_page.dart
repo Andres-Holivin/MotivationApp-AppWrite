@@ -70,7 +70,7 @@ class RegistrationPage extends StatelessWidget {
                             _formKey.currentState!.save();
                             context
                                 .read<AppWriteService>()
-                                .regist(emailTxt.text, passwordTxt.text,
+                                .register(emailTxt.text, passwordTxt.text,
                                     nameTxt.text)
                                 .then((value) => value == true
                                     ? context.router
