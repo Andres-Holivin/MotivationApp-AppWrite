@@ -136,7 +136,8 @@ class LocalNotificationService extends ChangeNotifier {
     //         ticker: 'ticker');
     // const NotificationDetails platformChannelSpecifics =
     //     NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin
-        ?.show(0, 'plain title', 'plain body', null, payload: 'item x');
+    await flutterLocalNotificationsPlugin?.show(
+        0, 'Study', 'One day, all your hard work will pay off.', null,
+        payload: 'item x');
   }
 }
