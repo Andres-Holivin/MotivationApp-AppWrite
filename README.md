@@ -3,7 +3,7 @@
 A new Flutter project.
 
 # Documentation
-for documentation can see on (https://dev.to/holivin21/motivation-app-using-appwrite-3oal)
+for documentation can view on (https://dev.to/holivin21/motivation-app-using-appwrite-3oal)
 
 ## Getting Started
 
